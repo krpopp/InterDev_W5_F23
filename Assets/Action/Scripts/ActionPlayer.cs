@@ -5,4 +5,79 @@ using UnityEngine;
 public class ActionPlayer : MonoBehaviour
 {
 
+    public KeyCode leftKey;
+    public KeyCode rightKey;
+
+    public float xAccel;
+    public float gravity;
+    public float bounceVel;
+
+    bool goLeft;
+    bool goRight;
+
+    Rigidbody2D myBody;
+
+    bool bounce;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        myBody = GetComponent<Rigidbody2D>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKey(leftKey))
+        {
+            goLeft = true;
+        }
+        else
+        {
+            goLeft = false;
+        }
+
+        if(Input.GetKey(rightKey))
+        {
+            goRight = true;
+        }
+        else 
+        {
+            goRight = false;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+
+        Vector3 newVel = myBody.velocity;
+        newVel.x *= 0.9f;
+
+        newVel.y += gravity;
+        
+        if(bounce)
+        {
+            newVel.y += bounceVel;
+            bounce = false;
+        }
+
+        if(goLeft)
+        {
+            newVel.x -= xAccel;
+        } else if(goRight)
+        {
+            newVel.x += xAccel;
+        }
+
+        myBody.velocity = newVel;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log("hit");
+        if (collision.gameObject.tag == "Cloud")
+        {
+            bounce = true;
+        }
+    }
 }
