@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NPCConvo : MonoBehaviour
 {
-
+    //dialogue for this npc
     public string myDialogue;
 
 }
